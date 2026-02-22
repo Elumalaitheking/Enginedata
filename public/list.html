@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Engine List</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <header class="header row between">
+        <div>
+          <h1>Engine List</h1>
+          <p>All saved engine names with direct view action.</p>
+        </div>
+        <a class="btn" href="/">Back to Dashboard</a>
+      </header>
+
+      <section class="card">
+        <div class="row">
+          <input id="listSearch" placeholder="Filter by engine name" />
+          <button id="listSearchBtn" class="btn">Search</button>
+        </div>
+        <p id="listMessage" class="msg"></p>
+        <ul id="fullEngineList" class="engine-list"></ul>
+      </section>
+    </div>
+
+    <script>
+      const qs = (s) => document.querySelector(s);
+      const list = qs('#fullEngineList');
+      const msg = qs('#listMessage');
+      const searchInput = qs('#listSearch');
+      const searchBtn = qs('#listSearchBtn');
+      let cache = [];
+
+      const setMessage = (text, type = '') => {
+        msg.textContent = text;
+        msg.className = `msg ${type}`.trim();
+      };
+
+      async function request(url) {
+        const res = await fetch(url);
+        const data = await res.json().catch(() => ([]));
+        if (!res.ok) throw new Error(data.message || 'Request failed');
+        return data;
+      }
+
+      function render(items) {
+        list.innerHTML = '';
+        items.forEach((engine) => {
+          const li = document.createElement('li');
+          li.className = 'row between';
+          const name = document.createElement('span');
+          name.textContent = engine.engineName;
+
+          const view = document.createElement('a');
+          view.className = 'btn btn-primary';
+          view.textContent = 'View';
+          view.href = `/?engineId=${engine._id}`;
+
+          li.appendChild(name);
+          li.appendChild(view);
+          list.appendChild(li);
+        });
+
+        if (!items.length) setMessage('No engines found.', 'error');
+        else setMessage(`${items.length} engine(s) found.`, 'success');
+      }
+
+      searchBtn.onclick = () => {
+        const term = searchInput.value.trim().toLowerCase();
+        if (!term) return render(cache);
+        render(cache.filter((e) => e.engineName.toLowerCase().includes(term)));
+      };
+
+      request('/api/engines')
+        .then((items) => {
+          cache = items;
+          render(items);
+        })
+        .catch((e) => setMessage(e.message, 'error'));
+    </script>
+  </body>
+</html>

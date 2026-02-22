@@ -29,6 +29,7 @@ Responsive full-stack app to store/search engine records with up to 10 images pe
 - Upload up to 10 images per engine
 - Search by engine name
 - Engine list with click-to-view details
+- Dedicated Engine List page (`/list.html`) with explicit View buttons
 - Image gallery + zoom modal
 - Edit/delete engine records
 - Delete individual images

@@ -75,6 +75,21 @@ function clearDetails() {
   engineDetails.textContent = 'Select an engine to view details.';
 }
 
+
+async function loadFromQueryParam() {
+  const params = new URLSearchParams(window.location.search);
+  const engineId = params.get('engineId');
+  if (!engineId) return;
+
+  try {
+    const engine = await request(`/api/engines/${engineId}`);
+    renderDetails(engine);
+    setMessage(searchMessage, `Viewing ${engine.engineName} from list page.`, 'success');
+  } catch (err) {
+    setMessage(searchMessage, err.message, 'error');
+  }
+}
+
 async function loadEngines() {
   const items = await request('/api/engines');
   engineList.innerHTML = '';
@@ -82,7 +97,7 @@ async function loadEngines() {
     const li = document.createElement('li');
     const b = document.createElement('button');
     b.className = 'btn';
-    b.textContent = engine.engineName;
+    b.textContent = `View ${engine.engineName}`;
     b.onclick = () => renderDetails(engine);
     li.appendChild(b);
     engineList.appendChild(li);
@@ -201,4 +216,6 @@ imageModal.addEventListener('click', (e) => e.target === imageModal && closeImag
 cancelEdit.onclick = () => editModal.classList.remove('open');
 editModal.addEventListener('click', (e) => e.target === editModal && editModal.classList.remove('open'));
 
-loadEngines().catch((e) => setMessage(searchMessage, e.message, 'error'));
+loadEngines()
+  .then(loadFromQueryParam)
+  .catch((e) => setMessage(searchMessage, e.message, 'error'));
