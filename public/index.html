@@ -3,73 +3,72 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Engine Records Dashboard</title>
+    <title>Engine Records Manager</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <div class="app-shell">
-      <header class="topbar">
-        <h1>Engine Records Dashboard</h1>
-        <p>Manage engines, testbed details, and image history in one place.</p>
+    <div class="container">
+      <header class="header">
+        <h1>Engine Records Manager</h1>
+        <p>Store, search, and maintain engine records with image history.</p>
       </header>
 
-      <main class="dashboard-grid">
-        <section class="panel">
-          <h2>Add Engine Record</h2>
-          <form id="engineForm" class="stack-form">
-            <label>
-              Engine Name *
-              <input type="text" name="engineName" required />
-            </label>
-            <label>
-              Air Filter
-              <input type="text" name="airFilter" />
-            </label>
-            <label>
-              Last Loaded Testbed
-              <input type="date" name="lastLoadedTestbed" />
-            </label>
-            <label>
-              Remarks
-              <textarea name="remarks" rows="4" placeholder="Optional notes..."></textarea>
-            </label>
-            <label>
-              Upload Engine Images (max 10)
-              <input type="file" id="images" name="images" accept="image/*" multiple />
-            </label>
-            <button type="submit" class="btn primary">Add Engine</button>
-          </form>
-          <p id="formMessage" class="message" aria-live="polite"></p>
-        </section>
+      <section class="card">
+        <h2>Add Engine</h2>
+        <form id="engineForm" class="form-grid">
+          <input name="engineName" placeholder="Engine Name *" required />
+          <input name="airFilter" placeholder="Air Filter" />
+          <input name="lastLoadedTestbed" type="date" />
+          <textarea name="remarks" placeholder="Remarks"></textarea>
+          <input id="images" name="images" type="file" accept="image/*" multiple />
+          <button class="btn btn-primary" type="submit">Add</button>
+        </form>
+        <p id="formMessage" class="msg"></p>
+      </section>
 
-        <section class="panel">
-          <h2>Search Engine</h2>
-          <div class="inline-controls">
-            <input type="text" id="searchInput" placeholder="Enter engine name" />
-            <button id="searchBtn" class="btn">Search</button>
+      <section class="card">
+        <h2>Search & List</h2>
+        <div class="row">
+          <input id="searchInput" placeholder="Search by engine name" />
+          <button id="searchBtn" class="btn">Search</button>
+        </div>
+        <p id="searchMessage" class="msg"></p>
+        <ul id="engineList" class="engine-list"></ul>
+      </section>
+
+      <section class="card">
+        <div class="row between">
+          <h2>Details</h2>
+          <div class="row">
+            <button id="editBtn" class="btn" disabled>Edit</button>
+            <button id="deleteBtn" class="btn btn-danger" disabled>Delete</button>
           </div>
-          <p id="searchMessage" class="message" aria-live="polite"></p>
-
-          <h3>All Engines</h3>
-          <ul id="engineList" class="engine-list"></ul>
-        </section>
-
-        <section class="panel full-width">
-          <div class="details-head">
-            <h2>Engine Details</h2>
-            <div class="inline-controls">
-              <button id="editBtn" class="btn" disabled>Edit</button>
-              <button id="deleteBtn" class="btn danger" disabled>Delete</button>
-            </div>
-          </div>
-          <div id="engineDetails" class="engine-details empty-state">Select or search an engine to view details.</div>
-        </section>
-      </main>
+        </div>
+        <div id="engineDetails" class="empty">Select an engine to view details.</div>
+      </section>
     </div>
 
-    <div id="imageModal" class="modal" role="dialog" aria-modal="true" aria-hidden="true">
-      <button id="closeModal" class="close-modal" aria-label="Close image viewer">✕</button>
-      <img id="modalImage" src="" alt="Zoomed engine" />
+    <div id="imageModal" class="modal" aria-hidden="true">
+      <button id="closeModal" class="modal-close">✕</button>
+      <img id="modalImage" alt="Zoomed engine image" />
+    </div>
+
+    <div id="editModal" class="modal" aria-hidden="true">
+      <div class="dialog">
+        <h3>Edit Engine</h3>
+        <form id="editForm" class="form-grid">
+          <input name="engineName" placeholder="Engine Name *" required />
+          <input name="airFilter" placeholder="Air Filter" />
+          <input name="lastLoadedTestbed" type="date" />
+          <textarea name="remarks" placeholder="Remarks"></textarea>
+          <label>Upload new images (optional): <input name="images" type="file" accept="image/*" multiple /></label>
+          <div id="existingImages" class="gallery"></div>
+          <div class="row">
+            <button class="btn btn-primary" type="submit">Save</button>
+            <button id="cancelEdit" class="btn" type="button">Cancel</button>
+          </div>
+        </form>
+      </div>
     </div>
 
     <script src="app.js"></script>
