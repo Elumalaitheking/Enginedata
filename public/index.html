@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Engine Records Dashboard</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <h1>Engine Records Dashboard</h1>
+        <p>Manage engines, testbed details, and image history in one place.</p>
+      </header>
+
+      <main class="dashboard-grid">
+        <section class="panel">
+          <h2>Add Engine Record</h2>
+          <form id="engineForm" class="stack-form">
+            <label>
+              Engine Name *
+              <input type="text" name="engineName" required />
+            </label>
+            <label>
+              Air Filter
+              <input type="text" name="airFilter" />
+            </label>
+            <label>
+              Last Loaded Testbed
+              <input type="date" name="lastLoadedTestbed" />
+            </label>
+            <label>
+              Remarks
+              <textarea name="remarks" rows="4" placeholder="Optional notes..."></textarea>
+            </label>
+            <label>
+              Upload Engine Images (max 10)
+              <input type="file" id="images" name="images" accept="image/*" multiple />
+            </label>
+            <button type="submit" class="btn primary">Add Engine</button>
+          </form>
+          <p id="formMessage" class="message" aria-live="polite"></p>
+        </section>
+
+        <section class="panel">
+          <h2>Search Engine</h2>
+          <div class="inline-controls">
+            <input type="text" id="searchInput" placeholder="Enter engine name" />
+            <button id="searchBtn" class="btn">Search</button>
+          </div>
+          <p id="searchMessage" class="message" aria-live="polite"></p>
+
+          <h3>All Engines</h3>
+          <ul id="engineList" class="engine-list"></ul>
+        </section>
+
+        <section class="panel full-width">
+          <div class="details-head">
+            <h2>Engine Details</h2>
+            <div class="inline-controls">
+              <button id="editBtn" class="btn" disabled>Edit</button>
+              <button id="deleteBtn" class="btn danger" disabled>Delete</button>
+            </div>
+          </div>
+          <div id="engineDetails" class="engine-details empty-state">Select or search an engine to view details.</div>
+        </section>
+      </main>
+    </div>
+
+    <div id="imageModal" class="modal" role="dialog" aria-modal="true" aria-hidden="true">
+      <button id="closeModal" class="close-modal" aria-label="Close image viewer">✕</button>
+      <img id="modalImage" src="" alt="Zoomed engine" />
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
