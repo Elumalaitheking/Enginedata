@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Engine Catalog</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="container">
+    <h1>Engine Catalog</h1>
+    <p class="subtitle">Upload up to 10 engine photos and store engine details in your browser.</p>
+
+    <section class="card">
+      <h2>Add Engine</h2>
+      <form id="engine-form">
+        <div class="grid">
+          <label>
+            Engine Name
+            <input type="text" id="engineName" required placeholder="e.g. CAT C18" />
+          </label>
+          <label>
+            Air Filter
+            <input type="text" id="airFilter" required placeholder="e.g. Donaldson P181132" />
+          </label>
+        </div>
+        <label>
+          Remarks
+          <textarea id="remarks" rows="3" placeholder="Any notes..."></textarea>
+        </label>
+        <label>
+          Engine Images (Max 10)
+          <input type="file" id="images" accept="image/*" multiple required />
+        </label>
+        <button type="submit">Save Engine</button>
+        <p id="form-message" class="message"></p>
+      </form>
+    </section>
+
+    <section class="card">
+      <h2>Search Engine</h2>
+      <input type="search" id="search" placeholder="Type engine name to find saved entries" />
+      <div id="results" class="results"></div>
+    </section>
+  </main>
+
+  <template id="engine-card-template">
+    <article class="engine-card">
+      <h3 class="engine-title"></h3>
+      <p><strong>Air Filter:</strong> <span class="air-filter"></span></p>
+      <p><strong>Remarks:</strong> <span class="remarks"></span></p>
+      <div class="image-grid"></div>
+    </article>
+  </template>
+
+  <script src="script.js"></script>
+</body>
+</html>
